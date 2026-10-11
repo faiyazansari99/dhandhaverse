@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Open World - DhandhaVerse</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+<style>body{background:#090d16;color:#fff;font-family:'Inter',system-ui,sans-serif;margin:0;overflow:hidden}</style>
+</head>
+<body class="flex flex-col h-screen">
+<header class="bg-slate-900/90 border-b border-slate-800 px-4 py-2 flex justify-between items-center z-50">
+  <a href="index.html" class="p-2 rounded-xl bg-slate-800 text-slate-300"><i data-lucide="arrow-left" class="w-4 h-4"></i></a>
+  <h1 class="text-xs font-bold">🏙️ DhandhaVerse Open World</h1>
+  <div class="text-[10px] text-amber-400 font-bold" id="hud">Loading...</div>
+</header>
+<div id="game-container" class="flex-1"></div>
+<script>
+lucide.createIcons();
+const config = {
+  type: Phaser.AUTO,
+  width: window.innerWidth,
+  height: window.innerHeight - 50,
+  backgroundColor: '#1e293b',
+  physics: { default: 'arcade' },
+  scene: { preload, create, update }
+};
+const player = { x: 400, y: 300, speed: 3 };
+let playerSprite, keys, coins = 0, coinGroup, hud;
+
+function preload() {
+  // Textures generate karo (no external assets needed)
+}
+function create() {
+  const scene = this;
+  const W = scene.scale.width, H = scene.scale.height;
+
+  // Background grid
+  const g = scene.add.graphics();
+  g.lineStyle(1, 0x334155, 0.5);
+  for (let x = 0; x < W + 1000; x += 40) g.lineBetween(x, 0, x, H + 1000);
+  for (let y = 0; y < H + 1000; y += 40) g.lineBetween(0, y, W + 1000, y);
+
+  // Buildings (desi vibe)
+  const buildings = [
+    { x: 100, y: 100, w: 120, h: 100, color: 0xf59e0b, label: '🛺 Auto Stand' },
+    { x: 400, y: 150, w: 150, h: 120, color: 0x3b82f6, label: '🏛️ Sarkari Office' },
+    { x: 700, y: 200, w: 140, h: 100, color: 0x10b981, label: '🏪 Gully Market' },
+    { x: 250, y: 400, w: 130, h: 110, color: 0xef4444, label: '🍔 Vada Pav Stall' }
+  ];
+  buildings.forEach(b => {
+    scene.add.rectangle(b.x, b.y, b.w, b.h, b.color, 0.3).setStrokeStyle(2, b.color);
+    scene.add.text(b.x - 40, b.y + b.h/2 + 8, b.label, { fontSize: '11px', color: '#cbd5e1' });
+  });
+
+  // Player
+  playerSprite = scene.add.circle(player.x, player.y, 18, 0xfbbf24);
+  playerSprite.setStrokeStyle(3, 0xf59e0b);
+  scene.add.text(player.x - 15, player.y - 45, '🧑 YOU', { fontSize: '10px', color: '#fbbf24' });
+
+  // Coins
+  coinGroup = scene.physics.add.group();
+  for (let i = 0; i < 8; i++) {
+    const c = scene.add.circle(200 + i*90, 300 + (i%3)*80, 8, 0xfbbf24);
+    c.setStrokeStyle(2, 0xf59e0b);
+    scene.physics.add.existing(c);
+    c.body.setCircle(8);
+    coinGroup.add(c);
+  }
+  scene.physics.add.overlap(playerSprite, coinGroup, (p, coin) => {
+    coin.destroy(); coins += 10;
+    document.getElementById('hud').innerText = `🪙 ${coins} DC`;
+  });
+
+  // Keyboard
+  keys = scene.input.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT');
+}
+function update() {
+  const speed = player.speed;
+  if (!keys) return;
+  if (keys.A.isDown || keys.LEFT.isDown) playerSprite.x -= speed;
+  if (keys.D.isDown || keys.RIGHT.isDown) playerSprite.x += speed;
+  if (keys.W.isDown || keys.UP.isDown) playerSprite.y -= speed;
+  if (keys.S.isDown || keys.DOWN.isDown) playerSprite.y += speed;
+}
+new Phaser.Game(config);
+</script>
+</body>
+</html>
