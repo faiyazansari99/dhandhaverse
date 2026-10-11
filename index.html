@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DhandhaVerse - Khelo, Banao, Kamao</title>
+    <!-- Tailwind CSS for Modern Professional UI/UX -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons for Clean Professional Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #090d16;
+            color: #ffffff;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        /* Custom Scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen justify-between overflow-hidden">
+
+    <!-- TOP HEADER / PROFESSIONAL BAR -->
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-2.5 flex justify-between items-center z-50">
+        <!-- Player Profile & Level -->
+        <div class="flex items-center space-x-3">
+            <div class="relative">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center font-bold text-slate-950 shadow-md shadow-amber-500/20" id="user-avatar-initial">
+                    DV
+                </div>
+                <div class="absolute -bottom-1 -right-1 bg-emerald-500 w-3.5 h-3.5 rounded-full border-2 border-slate-900"></div>
+            </div>
+            <div>
+                <h1 class="text-sm font-bold tracking-tight text-white" id="display-username">Gamer_Pro</h1>
+                <div class="flex items-center space-x-1">
+                    <span class="text-[10px] text-amber-400 font-semibold bg-amber-400/10 px-1.5 py-0.5 rounded">Level 1 Tycoon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Wallet & Icons Action Bar -->
+        <div class="flex items-center space-x-3">
+            <!-- Wallet Capsule -->
+            <div class="bg-slate-800/90 border border-slate-700/80 px-3 py-1 rounded-xl flex items-center space-x-3 shadow-inner">
+                <div>
+                    <div class="text-[9px] text-amber-400 font-medium uppercase tracking-wider">Virtual Bonus</div>
+                    <div class="text-xs font-bold text-amber-300" id="virtual-wallet">₹10.00</div>
+                </div>
+                <div class="h-6 w-px bg-slate-700"></div>
+                <div>
+                    <div class="text-[9px] text-emerald-400 font-medium uppercase tracking-wider">Winning Cash</div>
+                    <div class="text-xs font-bold text-emerald-400" id="winning-wallet">₹0.00</div>
+                </div>
+            </div>
+
+            <!-- Icon Controls (Settings, Mail, Events) -->
+            <div class="flex items-center space-x-1.5">
+                <button onclick="openModal('events')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 transition active:scale-95 relative" title="Live Events">
+                    <i data-lucide="trophy" class="w-4 h-4"></i>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                </button>
+                <button onclick="openModal('mail')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition active:scale-95" title="Inbox">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                </button>
+                <button onclick="openModal('settings')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition active:scale-95" title="Settings">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN GAME VIEWPORT -->
+    <main class="flex-1 relative bg-slate-950 flex flex-col items-center justify-center overflow-hidden">
+        
+        <!-- LOGIN VIEW SCREEN (Initialy Visible if not registered) -->
+        <div id="login-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-xl z-40 flex items-center justify-center p-4">
+            <div class="w-full max-w-sm bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-2xl space-y-5">
+                <div class="text-center space-y-1">
+                    <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-2xl mx-auto flex items-center justify-center mb-3">
+                        <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-xl font-bold tracking-tight text-white">DhandhaVerse</h2>
+                    <p class="text-xs text-slate-400">Khelo, Banao, Becho aur Real Cash Kamao</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-[11px] text-slate-400 font-medium block mb-1">Apna Gamer Naam likho</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3 top-3.5 w-4 h-4 text-slate-500"></i>
+                            <input type="text" id="username-input" placeholder="jaise: SataraKing" class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-amber-500 transition">
+                        </div>
+                    </div>
+                    
+                    <button onclick="handleLogin()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-bold rounded-xl transition duration-200 shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2 text-sm">
+                        <span>Game Me Enter Karo (₹10 Bonus)</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="text-center">
+                    <p class="text-[10px] text-slate-500">No KYC required to start • 100% Safe & Secure Skill Ecosystem</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- OPEN WORLD DASHBOARD (Background Map & Floating Bawaal Features) -->
+        <div id="dashboard-screen" class="absolute inset-0 flex flex-col justify-between p-4 pointer-events-none">
+            
+            <!-- TOP RIGHT FLOATING: BAWAAL FEATURES QUICK ACCESS -->
+            <div class="self-end space-y-2 pointer-events-auto">
+                <button onclick="openModal('builder')" class="flex items-center space-x-2 bg-slate-900/90 backdrop-blur-md border border-slate-700 px-3 py-2 rounded-2xl shadow-lg hover:border-amber-500 transition active:scale-95 group">
+                    <div class="p-1.5 bg-amber-500/10 text-amber-400 rounded-xl group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+                        <i data-lucide="hammer" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-left pr-1">
+                        <div class="text-xs font-bold text-white">Gully Builder</div>
+                        <div class="text-[9px] text-slate-400">Skin/Asset Design</div>
+                    </div>
+                </button>
+
+                <button onclick="openModal('naukri')" class="flex items-center space-x-2 bg-slate-900/90 backdrop-blur-md border border-slate-700 px-3 py-2 rounded-2xl shadow-lg hover:border-blue-500 transition active:scale-95 group">
+                    <div class="p-1.5 bg-blue-500/10 text-blue-400 rounded-xl group-hover:bg-blue-500 group-hover:text-slate-950 transition">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-left pr-1">
+                        <div class="text-xs font-bold text-white">Sarkari Naukri</div>
+                        <div class="text-[9px] text-slate-400">Daily Duty = Salary</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- CENTER ACTION NOTICE -->
+            <div class="self-center text-center pointer-events-auto bg-slate-900/80 backdrop-blur-md border border-slate-800 px-4 py-2 rounded-2xl shadow-xl">
+                <p class="text-xs font-medium text-amber-400">🌍 Open World Server Active: India Network</p>
+            </div>
+
+            <!-- BOTTOM QUICK ACTIONS -->
+            <div class="self-center pointer-events-auto pb-2">
+                <button onclick="openModal('play')" class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold rounded-2xl shadow-xl shadow-amber-500/30 flex items-center space-x-2 active:scale-95 transition">
+                    <i data-lucide="play" class="w-5 h-5 fill-slate-950"></i>
+                    <span>Khelna Shuru Karo</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- PROFESSIONAL BOTTOM NAVIGATION BAR (ICONS ONLY + CLEAN LABELS) -->
+    <nav class="bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-4 py-2 flex justify-around items-center z-50">
+        <button onclick="switchTab('explore')" class="flex flex-col items-center text-amber-400 transition" id="nav-explore">
+            <i data-lucide="compass" class="w-5 h-5 mb-0.5"></i>
+            <span class="text-[10px] font-medium">Explore</span>
+        </button>
+        <button onclick="switchTab('marketplace')" class="flex flex-col items-center text-slate-400 hover:text-white transition" id="nav-marketplace">
+            <i data-lucide="store" class="w-5 h-5 mb-0.5"></i>
+            <span class="text-[10px] font-medium">Market (70%)</span>
+        </button>
+        <button onclick="switchTab('inventory')" class="flex flex-col items-center text-slate-400 hover:text-white transition" id="nav-inventory">
+            <i data-lucide="backpack" class="w-5 h-5 mb-0.5"></i>
+            <span class="text-[10px] font-medium">Inventory</span>
+        </button>
+        <button onclick="switchTab('wallet')" class="flex flex-col items-center text-slate-400 hover:text-white transition" id="nav-wallet">
+            <i data-lucide="wallet" class="w-5 h-5 mb-0.5"></i>
+            <span class="text-[10px] font-medium">Wallet/UPI</span>
+        </button>
+    </nav>
+
+    <!-- JAVASCRIPT INITIALIZATION & ICONS LOADER -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        function handleLogin() {
+            const username = document.getElementById('username-input').value.trim();
+            if(!username) {
+                alert("Bhai pehle apna gamer naam toh likho!");
+                return;
+            }
+            document.getElementById('display-username').innerText = username;
+            document.getElementById('user-avatar-initial').innerText = username.substring(0, 2).toUpperCase();
+            
+            // Hide login screen smoothly
+            document.getElementById('login-screen').style.display = 'none';
+        }
+
+        function openModal(type) {
+            alert(type.toUpperCase() + " modal feature jald hi agle code me load hoga!");
+        }
+
+        function switchTab(tabName) {
+            // Reset active states
+            ['explore', 'marketplace', 'inventory', 'wallet'].forEach(t => {
+                const el = document.getElementById('nav-' + t);
+                if(el) el.className = "flex flex-col items-center text-slate-400 hover:text-white transition";
+            });
+            const activeEl = document.getElementById('nav-' + tabName);
+            if(activeEl) activeEl.className = "flex flex-col items-center text-amber-400 transition";
+            
+            if(tabName === 'wallet') {
+                alert("Wallet & UPI Withdrawal screen agle code me banegi!");
+            } else if(tabName === 'marketplace') {
+                alert("UGC Marketplace (70% Creator Share) agle code me aayega!");
+            }
+        }
+    </script>
+</body>
+</html>
